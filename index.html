@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stardust Utility Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f4f0ea;
+            color: #1a1918;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(26, 25, 24, 0.04);
+            border: 1px solid rgba(26, 25, 24, 0.05);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #8c857b;
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* 📑 Premium Navigation Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(26, 25, 24, 0.08);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #8c857b;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: #1a1918;
+            font-weight: 600;
+            border-bottom: 2px solid #1a1918;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .textarea-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8c857b;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            background: #faf8f5;
+            border: 1px solid rgba(26, 25, 24, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            color: #1a1918;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea {
+            height: 180px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        input[type="text"] {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            border-color: #1a1918;
+        }
+
+        .btn-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .btn-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        button {
+            background: #1a1918;
+            color: #f4f0ea;
+            border: none;
+            padding: 14px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #33312f;
+            transform: translateY(-1px);
+        }
+
+        .clear-btn {
+            background: transparent;
+            color: #8c857b;
+            border: 1px solid rgba(140, 133, 123, 0.3);
+        }
+
+        .clear-btn:hover {
+            background: rgba(140, 133, 123, 0.05);
+            color: #1a1918;
+            border-color: #1a1918;
+        }
+
+        /* 📝 Saved Notes Display Area */
+        .saved-notes-section {
+            margin-top: 30px;
+            border-top: 1px solid rgba(26, 25, 24, 0.08);
+            padding-top: 20px;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .note-card {
+            background: #faf8f5;
+            border: 1px solid rgba(26, 25, 24, 0.08);
+            padding: 15px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .note-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .note-card p {
+            font-size: 0.9rem;
+            color: #33312f;
+            white-space: pre-wrap;
+            font-family: monospace;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .delete-note-btn {
+            background: none;
+            color: #e74c3c;
+            border: none;
+            padding: 0;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: #8c857b;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a1918;
+            color: #f4f0ea;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Stardust Utility Suite</h1>
+        <div class="subtitle">Ecosystem Framework v1.2</div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('formatter-tab', this)">Structure Formatter</button>
+            <button class="tab-btn" onclick="switchTab('notes-tab', this)">Stardust Notes</button>
+        </div>
+
+        <div id="formatter-tab" class="tab-content active">
+            <div class="textarea-group">
+                <label for="inputData">Input Messy Text / Code</label>
+                <textarea id="inputData" placeholder="Paste your unformatted code, script or unaligned text lines here..."></textarea>
+            </div>
+
+            <div class="btn-container">
+                <button onclick="formatText()">Format Structure</button>
+                <button class="clear-btn" onclick="clearAll()">Clear All</button>
+            </div>
+
+            <div class="textarea-group" style="margin-top: 25px;">
+                <label for="outputData">Clean Output</label>
+                <textarea id="outputData" placeholder="Your flawless aligned output will appear here..." readonly onclick="copyOutput()"></textarea>
+                <span style="font-size: 0.75rem; color: #8c857b; display: block; margin-top: 5px; text-align: right; letter-spacing: 0.5px;">Click inside output box to copy instantly</span>
+            </div>
+        </div>
+
+        <div id="notes-tab" class="tab-content">
+            <div class="textarea-group">
+                <label for="noteTitle">Note / Code Title</label>
+                <input type="text" id="noteTitle" placeholder="e.g., Core Economy Loop Error Fix">
+                
+                <label for="noteContent">Write Code or Notes Securely</label>
+                <textarea id="noteContent" placeholder="Type your equations, code blueprints, or student notes here. They will stay saved in this browser..."></textarea>
+            </div>
+
+            <button style="width: 100%;" onclick="saveNote()">Save to Cloud Workspace</button>
+
+            <div class="saved-notes-section">
+                <label>Your Protected Notes Vault</label>
+                <div class="notes-grid" id="notesGrid">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Engineered by Stardust Official Ecosystem
+    </footer>
+
+    <div class="toast" id="toast">Changes Saved</div>
+
+    <script>
+        // 📑 Tab Switching Logic
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        // 🛠️ Formatter Core Logic
+        function formatText() {
+            const input = document.getElementById('inputData').value;
+            if(!input.trim()) return;
+
+            let lines = input.split('\n');
+            let cleanedLines = lines.map(line => line.trimEnd());
+            let result = cleanedLines.join('\n').replace(/\n{3,}/g, '\n\n'); 
+            
+            document.getElementById('outputData').value = result;
+            showToast("Structure Formatted");
+        }
+
+        function clearAll() {
+            document.getElementById('inputData').value = '';
+            document.getElementById('outputData').value = '';
+        }
+
+        function copyOutput() {
+            const output = document.getElementById('outputData');
+            if(!output.value) return;
+            output.select();
+            document.execCommand('copy');
+            showToast("Copied to Clipboard");
+        }
+
+        // 📝 Local Storage Secure Notes Logic
+        function saveNote() {
+            const title = document.getElementById('noteTitle').value.trim();
+            const content = document.getElementById('noteContent').value.trim();
+
+            if(!title || !content) {
+                showToast("Please fill both fields");
+                return;
+            }
+
+            let notes = JSON.parse(localStorage.getItem('stardust_notes')) || [];
+            const newNote = { id: Date.now(), title, content };
+            notes.push(newNote);
+            
+            localStorage.setItem('stardust_notes', JSON.stringify(notes));
+            
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+            
+            loadNotes();
+            showToast("Note Locked in Vault");
+        }
+
+        function loadNotes() {
+            const notesGrid = document.getElementById('notesGrid');
+            notesGrid.innerHTML = '';
+            let notes = JSON.parse(localStorage.getItem('stardust_notes')) || [];
+
+            if(notes.length === 0) {
+                notesGrid.innerHTML = '<p style="color: #8c857b; font-style: italic; font-size: 0.9rem; border: none; background: none; padding: 0;">No notes found in your local vault.</p>';
+                return;
+            }
+
+            notes.forEach(note => {
+                const card = document.createElement('div');
+                card.className = 'note-card';
+                card.innerHTML = `
+                    <h4>${note.title}</h4>
+                    <p>${note.content}</p>
+                    <button class="delete-note-btn" onclick="deleteNote(${note.id})">Wipe Note</button>
+                `;
+                notesGrid.appendChild(card);
+            });
+        }
+
+        function deleteNote(id) {
+            let notes = JSON.parse(localStorage.getItem('stardust_notes')) || [];
+            notes = notes.filter(note => note.id !== id);
+            localStorage.setItem('stardust_notes', JSON.stringify(notes));
+            loadNotes();
+            showToast("Note Safely Wiped");
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Initial Load
+        window.onload = function() {
+            loadNotes();
+        }
+    </script>
+</body>
+      </html>
